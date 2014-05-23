@@ -66,7 +66,7 @@ void DropArea::paint(QPainter *painter,
      painter->setBrush(dragOver ? Qt::black : Qt::lightGray);
      painter->drawRoundedRect(-10, -30, 20, 30, 25, 25, Qt::RelativeSize);
 */
-     if (pixmap.isNull()) {
+    // if (pixmap.isNull()) {
     painter->setBrush(Qt::white);
     painter->drawRect(-125, -50, 100, 125);
        /* painter->setBrush(Qt::white);
@@ -78,10 +78,10 @@ void DropArea::paint(QPainter *painter,
         painter->setPen(QPen(Qt::black, 2));
         painter->setBrush(Qt::NoBrush);
         painter->drawArc(-6, -2 - 20, 12, 15, 190 * 16, 160 * 16);*/
-    } else {
-        //painter->scale(.2272, .2824);
-        painter->drawPixmap(QPointF(-15 * 4.4, -50 * 3.54), pixmap);
-    }
+   // } else {
+        painter->scale(.4272, .3824);
+        painter->drawPixmap(QPointF(-9.5 * 30, -20 * 3), pixmap);
+    //}
 
 }
 //! [5]
