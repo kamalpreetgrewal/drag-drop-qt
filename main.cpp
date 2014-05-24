@@ -39,7 +39,10 @@
 ****************************************************************************/
 
 #include <QtWidgets>
-
+#include <QXmlStreamReader>
+#include <QDebug>
+#include <QString>
+#include <QFile>
 #include "drop.h"
 #include "drag.h"
 
@@ -62,8 +65,29 @@ protected:
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+    QList<QString> Path;
 
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+    QFile file("/home/omg/QT/Drag_Drop/images.qrc");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "File open error:" << file.errorString();
+        return 1;
+    }
+    QXmlStreamReader inputStream(&file);
+    while (!inputStream.atEnd() && !inputStream.hasError())
+    {
+        inputStream.readNext();
+        if (inputStream.isStartElement())
+        {
+            QString name = inputStream.name().toString();
+            if (name == "file")
+               { qDebug()   << "file:" << inputStream.readElementText();
+            Path << name;
+            }
+        }
+
+    }
+
+    //qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 //! [0]
 //! [1]
     QGraphicsScene scene(-200, -200, 400, 400);
@@ -87,6 +111,8 @@ int main(int argc, char **argv)
     view.setBackgroundBrush(QColor(230, 200, 167));
     view.setWindowTitle("Drag and Drop Robot");
     view.show();
+
+
 
     return app.exec();
 }

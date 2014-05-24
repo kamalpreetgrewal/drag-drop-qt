@@ -40,23 +40,41 @@
 ****************************************************************************/
 
 #include <QtWidgets>
+#include <QList>
+#include <QStringList>
 
 #include "drag.h"
+
+/*ImageItem::ImageList()
+{
+    QImage img1(":/images/1.jpg");
+    QImage img2(":/images/2.jpg");
+    QImage img3(":/images/3.jpg");
+    QImage img4(":/images/4.jpg");
+
+}
+*/
 
 //! [0]
 ImageItem::ImageItem()
    : image(":/images/1.jpg")
 {
-   setToolTip(QString("Click and drag this image onto the robot!"));
-   setCursor(Qt::OpenHandCursor);
-   setAcceptedMouseButtons(Qt::LeftButton);
+
+    setToolTip(QString("Click and drag this image onto the rectangle!"));
+    setCursor(Qt::OpenHandCursor);
+    setAcceptedMouseButtons(Qt::LeftButton);
+
 }
 //! [0]
+
+float x1=100;
+
 
 //! [1]
 QRectF ImageItem::boundingRect() const
 {
-   return QRectF(100, -100, 100, 100);
+   return QRectF(x1,y1,x2,y2);
+
 }
 //! [1]
 
@@ -70,11 +88,16 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
    painter->drawEllipse(-12, -12, 30, 30);
    painter->setPen(QPen(Qt::black, 1));
    painter->setBrush(QBrush(color));
-   painter->drawEllipse(-15, -15, 30, 30);*/
-   painter->setBrush(Qt::white);
-   painter->drawRect(100, -100, 100, 100);
-   painter->drawImage(boundingRect(),image);
-}
+   painter->drawEllipse(-15, -15, 30, 30);
+    foreach (QList, QImage) {*/
+        painter->setBrush(Qt::white);
+        painter->drawRect(x1,y1,x2,y2);
+        painter->drawImage(boundingRect(),image);
+        /*img_array.push_back(img1);
+        img_array.push_back(img2);
+        img_array.push_back(img3);*/
+    }
+
 //! [2]
 
 //! [3]
@@ -96,10 +119,9 @@ void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
    QMimeData *mime = new QMimeData;
    drag->setMimeData(mime);
 
-       mime->setImageData(image);
-
-       drag->setPixmap(QPixmap::fromImage(image).scaled(50, 50));
-       drag->setHotSpot(QPoint(15, 30));
+   mime->setImageData(image);
+   drag->setPixmap(QPixmap::fromImage(image).scaled(50, 50));
+   drag->setHotSpot(QPoint(15, 30));
 
    drag->exec();
    setCursor(Qt::OpenHandCursor);
