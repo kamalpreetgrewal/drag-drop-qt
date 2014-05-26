@@ -43,10 +43,9 @@
 #include <QDebug>
 #include <QString>
 #include <QFile>
+#include <QList>
 #include "drop.h"
 #include "drag.h"
-
-//#include <math.h>
 
 class GraphicsView : public QGraphicsView
 {
@@ -61,12 +60,10 @@ protected:
     }
 };
 
-//! [0]
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
     QList<QString> Path;
-
     QFile file("/home/omg/QT/Drag_Drop/images.qrc");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "File open error:" << file.errorString();
@@ -80,40 +77,30 @@ int main(int argc, char **argv)
         {
             QString name = inputStream.name().toString();
             if (name == "file")
-               { qDebug()   << "file:" << inputStream.readElementText();
-            Path << name;
-            }
-        }
+               {
+                Path << ":/" + inputStream.readElementText() ;
+               }
+         }
+     }
+     qDebug() << Path;
 
-    }
-
-    //qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-//! [0]
-//! [1]
-    QGraphicsScene scene(-200, -200, 400, 400);
-
-/*    for (int i = 0; i < 10; ++i) {*/
-        ImageItem *item = new ImageItem;
-        item->setPos(0,0);
-
+    QGraphicsScene scene(-200, -200, 600, 600);
+    for (int i = 0; i < Path.size(); ++i) {
+        ImageItem *item = new ImageItem(Path.at(i));
+        item->setPos(0,120*i);
         scene.addItem(item);
-//    }
-
+}
     Area *area = new Area;
     area->setTransform(QTransform::fromScale(1.2, 1.2), true);
     area->setPos(0, -20);
     scene.addItem(area);
-//! [1]
-//! [2]
     GraphicsView view(&scene);
     view.setRenderHint(QPainter::Antialiasing);
     view.setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     view.setBackgroundBrush(QColor(230, 200, 167));
-    view.setWindowTitle("Drag and Drop Robot");
+    view.setWindowTitle("Drag and Drop");
     view.show();
 
-
-
-    return app.exec();
+   return app.exec();
 }
-//! [2]
+

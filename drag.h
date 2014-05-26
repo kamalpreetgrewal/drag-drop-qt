@@ -4,16 +4,13 @@
 #include <QGraphicsItem>
 #include <QFrame>
 
-//! [0]
 class ImageItem : public QGraphicsItem
 {
 public:
-    ImageItem();
-
+    ImageItem(QString);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     float x1,y1,x2,y2;
-
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -22,10 +19,7 @@ protected:
 
 private:
     QImage image;
-    QList<QImage> ImageList;
     QVector<QImage> img_array;
-
 };
-//![0]
 
 #endif // DRAG_H
